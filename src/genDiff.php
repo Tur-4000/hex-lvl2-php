@@ -20,7 +20,7 @@ use function Tur4000\Differ\Renderer\render;
  * 
  * @param string $file1  path to first file
  * @param string $file2  path to second file
- * @param string $format format of output string, default 'stylish'
+ * @param string $format format of output report, default 'stylish'
  * 
  * @return string
  */
