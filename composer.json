@@ -1,0 +1,42 @@
+{
+    "name": "hexlet/code",
+    "description": "Second php project.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Turbanov Valeriy",
+            "email": "tur.4000@gmail.com"
+        }
+    ],
+    "autoload": {
+      "psr-4": {
+
+      },
+      "files": [
+        "src/help.php",
+        "src/genDiff.php",
+        "src/Parsers/parser.php",
+        "src/Parsers/parserFabric.php",
+        "src/Parsers/jsonParse.php",
+        "src/Parsers/yamlParse.php",
+        "src/Parsers/buildAst.php",
+        "src/Renderers/renderer.php"
+      ]
+    },
+    "require": {
+        "docopt/docopt": "^1.0",
+        "funct/funct": "^1.5",
+        "symfony/yaml": "^5.2"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5",
+        "phpunit/phpunit": "^9.5"
+    },
+    "bin": [
+        "bin/gendiff"
+    ],
+    "scripts": {
+        "phpcs": "phpcs",
+        "test": "phpunit"
+    }
+}

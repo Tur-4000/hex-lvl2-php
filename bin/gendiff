@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+
+<?php
+
+use const Tur4000\Differ\Help\VERSION;
+use const Tur4000\Differ\Help\DOC;
+
+use function Tur4000\Differ\GenDiff\genDiff;
+
+$autoloadPath1 = __DIR__ . '/../../../autoload.php';
+$autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
+if (file_exists($autoloadPath1)) {
+    require_once $autoloadPath1;
+} else {
+    require_once $autoloadPath2;
+}
+
+$params = Docopt::handle(DOC, ['version' => VERSION]);
+
+$firstFile = $params->args['FIRST_FILE'];
+$secondFile = $params->args['SECOND_FILE'];
+$format = $params->args['--format'];
+
+echo genDiff($firstFile, $secondFile, $format);
+echo PHP_EOL;
