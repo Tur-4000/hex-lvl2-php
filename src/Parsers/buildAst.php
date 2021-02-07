@@ -27,17 +27,31 @@ function buildAst(\stdClass $data1, \stdClass $data2)
     $ast = [];
     foreach ($mergedData as $key => $value) {
         if (!property_exists($data1, $key)) {
-            $ast[$key] = [
-                'type' => 'value',
-                'status' => 'added',
-                'value' => $value
-            ];
+            $ast[$key] = ['status' => 'added',];
+            if (\is_object($value)) {
+                $ast[$key] += [
+                    'type' => 'node',
+                    'value' => buildAst($data1->$key, $value),
+                ];
+            } else {
+                $ast[$key] += [
+                    'type' => 'value',
+                    'value' => $value
+                ];
+            }
         } elseif (!property_exists($data2, $key)) {
-            $ast[$key] = [
-                'type' => 'value',
-                'status' => 'deleted',
-                'value' => $value
-            ];
+            $ast[$key] = ['status' => 'deleted',];
+            if (\is_object($value)) {
+                $ast[$key] += [
+                    'type' => 'node',
+                    'value' => buildAst($data1->$key, $value),
+                ];
+            } else {
+                $ast[$key] += [
+                    'type' => 'value',
+                    'value' => $value
+                ];
+            }
         } elseif ($value === $data1->$key) {
             $ast[$key] = [
                 'type' => 'value',
@@ -62,7 +76,7 @@ function buildAst(\stdClass $data1, \stdClass $data2)
     }
 
     ksort($ast);
-// var_dump($ast);
+var_dump($ast);
     return $ast;
 }
 
@@ -99,7 +113,7 @@ function genAst(\stdClass $data1, \stdClass $data2)
             ];
         }
     }
-    var_dump($ast);
+    // var_dump($ast);
     return $ast;
 }
 
