@@ -13,6 +13,9 @@
 
 namespace Differ\Differ\Parsers;
 
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
+
 function parserFabric(string $pathToFile)
 {
     $fileType = getFileType($pathToFile);
