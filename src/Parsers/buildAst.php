@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Создание промежуточного представления для сравнения файлов
+ * php version 7.4
+ *
+ * @category Library
+ * @package  Differ\Differ
+ * @author   Valeriy Turbanov <tur.4000@gmail.com>
+ * @license  https://github.com/Tur-4000/hex-lvl2-php/LICENSE MIT
+ * @link     https://github.com/Tur-4000/hex-lvl2-php
+ */
+
 namespace Differ\Differ\Parsers;
 
 /*
@@ -50,6 +61,15 @@ format
 ]
 // property_exists()
 */
+
+/**
+ * Создание промежуточного представления для сравнения
+ *
+ * @param \stdClass
+ * @param \stdClass
+ *
+ * @return \stdClass
+ */
 function buildAst($data1, $data2)
 {
     $mergedData = mergeObjects($data1, $data2);
@@ -84,6 +104,16 @@ function buildAst($data1, $data2)
     return $ast;
 }
 
+/**
+ * Слияние двух обектов:
+ * если свойство присутствует в обоих объектах - записывется значение второго объекта
+ * в остальных случаях свойства переносятся со своими значениями
+ *
+ * @param \stdClass $data1 первый объект
+ * @param \stdClass $data2 второй объект
+ *
+ * @return \stdClass
+ */
 function mergeObjects(\stdClass $data1, \stdClass $data2): \stdClass
 {
     $merged = clone $data1;
