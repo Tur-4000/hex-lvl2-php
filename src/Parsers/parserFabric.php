@@ -1,10 +1,10 @@
 <?php
 
-namespace Tur4000\Differ\Parsers;
+namespace Differ\Differ\Parsers;
 
 // use function Funct\Strings\endsWith;
-use function Tur4000\Differ\Parsers\jsonParse;
-use function Tur4000\Differ\Parsers\yamlParse;
+use function Differ\Differ\Parsers\jsonParse;
+use function Differ\Differ\Parsers\yamlParse;
 
 function parserFabric(string $pathToFile)
 {

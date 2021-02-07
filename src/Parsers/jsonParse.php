@@ -1,6 +1,6 @@
 <?php
 
-namespace Tur4000\Differ\Parsers;
+namespace Differ\Differ\Parsers;
 
 function jsonParse(string $json)
 {

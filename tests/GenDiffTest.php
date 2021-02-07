@@ -1,10 +1,10 @@
 <?php
 
-namespace Tur4000\Differ\Tests;
+namespace Differ\Differ\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-use function Tur4000\Differ\GenDiff\genDiff;
+use function Differ\Differ\GenDiff\genDiff;
 
 class GenDiffTest extends TestCase
 {

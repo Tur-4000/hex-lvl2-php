@@ -1,6 +1,6 @@
 <?php
 
-namespace Tur4000\Differ\Renderer;
+namespace Differ\Differ\Renderer;
 
 function render(array $ast, string $format = 'stylish'): string
 {

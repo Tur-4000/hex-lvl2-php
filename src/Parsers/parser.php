@@ -1,9 +1,9 @@
 <?php
 
-namespace Tur4000\Differ\Parsers;
+namespace Differ\Differ\Parsers;
 
-use function Tur4000\Differ\Parsers\parserFabric;
-use function Tur4000\Differ\Parsers\buildAst;
+use function Differ\Differ\Parsers\parserFabric;
+use function Differ\Differ\Parsers\buildAst;
 
 function parser(string $pathToFile1, string $pathToFile2)
 {

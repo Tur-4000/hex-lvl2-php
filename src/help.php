@@ -3,14 +3,15 @@
 /**
  * Константы для конфигурирования docopt
  * php version 7.4
- * 
+ *
  * @category Library
  * @package  Tur4000\Differ
  * @author   Valeriy Turbanov <tur.4000@gmail.com>
  * @license  https://github.com/Tur-4000/hex-lvl2-php/LICENSE MIT
  * @link     https://github.com/Tur-4000/hex-lvl2-php
  */
-namespace Tur4000\Differ\Help;
+
+namespace Differ\Differ\Help;
 
 const VERSION = "0.0.0";
 const DOC = <<<DOC
