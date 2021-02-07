@@ -47,21 +47,22 @@ function buildAst(\stdClass $data1, \stdClass $data2)
         } elseif ($value !== $data1->$key) {
             $ast[$key] = ['status' => 'modified',];
             if (\is_object($value)) {
-                $ast[$key] = [
+                $ast[$key] += [
                     'type' => 'node',
                     'value' => buildAst($data1->$key, $value),
                 ];
+            } else {
+                $ast[$key] += [
+                    'type' => 'value',
+                    'valueBefore' => $data1->$key,
+                    'valueAfter' => $value,
+                ];
             }
-            $ast[$key] = [
-                'type' => 'value',
-                'valueBefore' => $data1->$key,
-                'valueAfter' => $value,
-            ];
         }
     }
 
     ksort($ast);
-
+// var_dump($ast);
     return $ast;
 }
 
@@ -98,7 +99,7 @@ function genAst(\stdClass $data1, \stdClass $data2)
             ];
         }
     }
-
+    var_dump($ast);
     return $ast;
 }
 
