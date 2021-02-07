@@ -81,5 +81,7 @@ class BuildAstTest extends TestCase
             'valueAfter' => 20
         ];
         $expected2->verbose = ['status' => 'added', 'value' => true,];
+
+        $this->assertEquals($expected2, buildAst($data1, $data2));
     }
 }
