@@ -28,22 +28,32 @@ function buildAst(\stdClass $data1, \stdClass $data2)
     foreach ($mergedData as $key => $value) {
         if (!property_exists($data1, $key)) {
             $ast[$key] = [
+                'type' => 'value',
                 'status' => 'added',
                 'value' => $value
             ];
         } elseif (!property_exists($data2, $key)) {
             $ast[$key] = [
+                'type' => 'value',
                 'status' => 'deleted',
                 'value' => $value
             ];
         } elseif ($value === $data1->$key) {
             $ast[$key] = [
+                'type' => 'value',
                 'status' => 'unchanged',
                 'value' => $value
             ];
         } elseif ($value !== $data1->$key) {
+            $ast[$key] = ['status' => 'modified',];
+            if (\is_object($value)) {
+                $ast[$key] = [
+                    'type' => 'node',
+                    'value' => buildAst($data1->$key, $value),
+                ];
+            }
             $ast[$key] = [
-                'status' => 'modified',
+                'type' => 'value',
                 'valueBefore' => $data1->$key,
                 'valueAfter' => $value,
             ];
@@ -51,6 +61,43 @@ function buildAst(\stdClass $data1, \stdClass $data2)
     }
 
     ksort($ast);
+
+    return $ast;
+}
+
+function genAst(\stdClass $data1, \stdClass $data2)
+{
+    $mergedData = mergeObjects($data1, $data2);
+    $ast = new \stdClass();
+
+    foreach ($mergedData as $key => $value) {
+        if (!property_exists($data1, $key)) {
+            $ast->$key = [
+                'type' => 'value',
+                'state' => 'added',
+                'value' => $value
+            ];
+        } elseif (!property_exists($data2, $key)) {
+            $ast->$key = [
+                'type' => 'value',
+                'state' => 'deleted',
+                'value' => $value
+            ];
+        } elseif ($value === $data1->$key) {
+            $ast->$key = [
+                'type' => 'value',
+                'state' => 'unchanged',
+                'value' => $value
+            ];
+        } elseif ($value != $data1->$key) {
+            $ast->$key = [
+                'type' => 'value',
+                'state' => 'modified',
+                'valueBefore' => $data1->$key,
+                'valueAfter' => $value,
+            ];
+        }
+    }
 
     return $ast;
 }
