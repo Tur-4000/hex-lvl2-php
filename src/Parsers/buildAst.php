@@ -65,12 +65,12 @@ format
 /**
  * Создание промежуточного представления для сравнения
  *
- * @param \stdClass
- * @param \stdClass
+ * @param \stdClass $data1 первый объект
+ * @param \stdClass $data2 второй объект
  *
  * @return \stdClass
  */
-function buildAst($data1, $data2)
+function buildAst(\stdClass $data1, \stdClass $data2)
 {
     $mergedData = mergeObjects($data1, $data2);
     $ast = [];

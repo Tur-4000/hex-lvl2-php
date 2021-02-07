@@ -16,14 +16,21 @@ namespace Differ\Differ\Parsers;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-function parserFabric(string $pathToFile)
+/**
+ * Фабрика парсинга файлов
+ *
+ * @param string $pathToFile имя файла (полное или относительное)
+ *
+ * @return \stdClass
+ */
+function parserFabric(string $pathToFile): \stdClass
 {
     $fileType = getFileType($pathToFile);
     $data = file_get_contents($pathToFile);
 
     if ($fileType === '.json') {
         $parsedData = jsonParse($data);
-    } elseif ($fileType === '.yaml') {
+    } elseif ($fileType === '.yaml' || $fileType === '.yml') {
         $parsedData = yamlParse($data);
     } else {
         die("Udefined file format: {$fileType}\n");
@@ -32,6 +39,13 @@ function parserFabric(string $pathToFile)
     return $parsedData;
 }
 
+/**
+ * Определение типа файла по его расширению
+ *
+ * @param string $pathToFile имя файла (полное или относительное)
+ *
+ * @return string
+ */
 function getFileType(string $pathToFile): string
 {
     $fileType = substr($pathToFile, strrpos($pathToFile, '.'));
@@ -39,9 +53,15 @@ function getFileType(string $pathToFile): string
     return strtolower($fileType);
 }
 
-function jsonParse(string $json)
+/**
+ * Парсинг JSON
+ *
+ * @param string $json данные в JSON формате
+ *
+ * @return \stdClass
+ */
+function jsonParse(string $json): \stdClass
 {
-    // $parsedData = json_decode($json, true);
     $parsedData = json_decode($json);
 
     if (json_last_error() === JSON_ERROR_NONE) {
@@ -51,15 +71,18 @@ function jsonParse(string $json)
     }
 }
 
-function yamlParse(string $yaml)
+/**
+ * Парсинг YAML
+ *
+ * @param string $yaml данные в YAML формате
+ *
+ * @return \stdClass
+ */
+function yamlParse(string $yaml): \stdClass
 {
     try {
-        $parsedData = Yaml::parse($yaml, Yaml::PARSE_OBJECT_FOR_MAP);
-        // $parsedData = Yaml::parse($yaml);
-
-        return $parsedData;
+        return Yaml::parse($yaml, Yaml::PARSE_OBJECT_FOR_MAP);
     } catch (ParseException $exception) {
         die("Unable to parse the YAML string: {$exception->getMessage()}");
-        // printf('Unable to parse the YAML string: %s', $exception->getMessage());
     }
 }
