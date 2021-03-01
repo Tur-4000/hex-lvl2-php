@@ -1,8 +1,5 @@
 <?php
 
-<<<<<<< HEAD
-namespace Differ\Differ\Renderer;
-=======
 /**
  * Создание текстового представления сравнения файлов
  * php version 7.4
@@ -13,7 +10,6 @@ namespace Differ\Differ\Renderer;
  * @license  https://github.com/Tur-4000/hex-lvl2-php/LICENSE MIT
  * @link     https://github.com/Tur-4000/hex-lvl2-php
  */
->>>>>>> 97b4acc1545e2e82ebae2097cbffc5f3a8859b25
 
 namespace Differ\Differ\Renderer;
 

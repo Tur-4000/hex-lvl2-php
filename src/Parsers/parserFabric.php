@@ -13,6 +13,7 @@
 
 namespace Differ\Differ\Parsers;
 
+use Exception;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
@@ -34,6 +35,34 @@ function parserFabric(string $pathToFile): \stdClass
         $parsedData = yamlParse($data);
     } else {
         die("Udefined file format: {$fileType}\n");
+    }
+
+    return $parsedData;
+}
+
+function parseFile(string $pathToFile)
+{
+    $realPath = realpath($pathToFile);
+
+    if (!$realPath) {
+        throw new Exception("Не могу найти файл {$pathToFile}");
+    }
+
+    $fileInfo = pathinfo($realPath);
+
+    if ($fileInfo['filename']) {
+        throw new Exception("Неизвестное имя файла");
+    }
+
+    $fileType = strtolower($fileInfo['extension']);
+    $rawData = file_get_contents($realPath);
+
+    if ($fileType === 'json') {
+        $parsedData = jsonParse($rawData);
+    } elseif ($fileType === 'yml' || $fileType === 'yaml') {
+        $parsedData = yamlParse($rawData);
+    } else {
+        throw new Exception("Udefined file format: {$fileType}\n");
     }
 
     return $parsedData;
