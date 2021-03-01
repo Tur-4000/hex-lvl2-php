@@ -2,10 +2,9 @@
 
 <?php
 
-use const Tur4000\Differ\Help\VERSION;
-use const Tur4000\Differ\Help\DOC;
+use const Differ\Differ\GenDiff\VERSION;
 
-use function Tur4000\Differ\GenDiff\genDiff;
+use function Differ\Differ\GenDiff\genDiff;
 
 $autoloadPath1 = __DIR__ . '/../../../autoload.php';
 $autoloadPath2 = __DIR__ . '/../vendor/autoload.php';
@@ -14,6 +13,21 @@ if (file_exists($autoloadPath1)) {
 } else {
     require_once $autoloadPath2;
 }
+
+const DOC = <<<DOC
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+  gendiff [--format <fmt>] FIRST_FILE SECOND_FILE
+
+Options:
+  -h --help                     Show this screen
+  -v --version                  Show version
+  --format <fmt>                Report format [default: stylish]
+
+DOC;
 
 $params = Docopt::handle(DOC, ['version' => VERSION]);
 
