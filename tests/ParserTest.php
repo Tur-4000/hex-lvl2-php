@@ -49,4 +49,34 @@ class ParserTest extends TestCase
         $this->assertEquals($expected2, $ymlData2);
         $this->assertEquals($expected2, $jsonData2);
     }
+
+    public function testInvalidPath()
+    {
+        $this->expectException(\Exception::class);
+        $data = parseFile('./test/fixtures/file01.json');
+    }
+
+    public function testEmptyFileName()
+    {
+        $this->expectException(\Exception::class);
+        $data = parseFile('./tests/fixtures/.json');
+    }
+
+    public function testUndefinedFormat()
+    {
+        $this->expectException(\Exception::class);
+        $data = parseFile('./tests/fixtures/expected2.txt');
+    }
+
+    public function testJsonError()
+    {
+        $this->expectException(\Exception::class);
+        $data = parseFile('./tests/fixtures/bad.json');
+    }
+
+    // public function testYamlError()
+    // {
+    //     $this->expectException(Symfony\Component\Yaml\Exception\ParseException::class);
+    //     $data = parseFile('./tests/fixtures/bad.yml');
+    // }
 }
