@@ -76,7 +76,7 @@ function buildAst(\stdClass $data1, \stdClass $data2)
     }
 
     ksort($ast);
-var_dump($ast);
+
     return $ast;
 }
 
