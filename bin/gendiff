@@ -35,5 +35,10 @@ $firstFile = $params->args['FIRST_FILE'];
 $secondFile = $params->args['SECOND_FILE'];
 $format = $params->args['--format'];
 
-echo genDiff($firstFile, $secondFile, $format);
-echo PHP_EOL;
+try {
+    $diff = genDiff($firstFile, $secondFile, $format);
+    echo $diff;
+    echo PHP_EOL;
+} catch(Exception $e) {
+    echo $e->getMessage();
+}
