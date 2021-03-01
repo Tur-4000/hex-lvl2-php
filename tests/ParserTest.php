@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Тесты buildAst
+ * Тесты file parser
  * php version 7.4
  *
  * @category Library
