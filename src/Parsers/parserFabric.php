@@ -18,29 +18,13 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
 /**
- * Фабрика парсинга файлов
+ * Фабрика парсинга файлов yml и json
  *
  * @param string $pathToFile имя файла (полное или относительное)
  *
  * @return \stdClass
  */
-function parserFabric(string $pathToFile): \stdClass
-{
-    $fileType = getFileType($pathToFile);
-    $data = file_get_contents($pathToFile);
-
-    if ($fileType === '.json') {
-        $parsedData = jsonParse($data);
-    } elseif ($fileType === '.yaml' || $fileType === '.yml') {
-        $parsedData = yamlParse($data);
-    } else {
-        die("Udefined file format: {$fileType}\n");
-    }
-
-    return $parsedData;
-}
-
-function parseFile(string $pathToFile)
+function parseFile(string $pathToFile): \stdClass
 {
     $realPath = realpath($pathToFile);
 
