@@ -16,6 +16,8 @@ namespace Differ\Differ\GenDiff;
 use function Differ\Differ\Parsers\parser;
 use function Differ\Differ\Renderer\render;
 
+const VERSION = "0.0.0";
+
 /**
  * Generate diff fromm 2 json or yaml files
  *
