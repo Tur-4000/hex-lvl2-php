@@ -15,7 +15,6 @@
       "files": [
         "src/genDiff.php",
         "src/Parsers/parser.php",
-        "src/Parsers/parserFabric.php",
         "src/Parsers/buildAst.php",
         "src/Renderers/renderer.php"
       ]

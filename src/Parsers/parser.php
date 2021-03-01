@@ -13,8 +13,9 @@
 
 namespace Differ\Differ\Parsers;
 
-use function Differ\Differ\Parsers\parserFabric;
-use function Differ\Differ\Parsers\parseFile;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
+
 use function Differ\Differ\Parsers\buildAst;
 
 /**
@@ -31,4 +32,74 @@ function parser(string $pathToFile1, string $pathToFile2)
     $data2 = parseFile($pathToFile2);
 
     return buildAst($data1, $data2);
+}
+
+/**
+ * Фабрика парсинга файлов yml и json
+ *
+ * @param string $pathToFile имя файла (полное или относительное)
+ *
+ * @return \stdClass
+ */
+function parseFile(string $pathToFile): \stdClass
+{
+    $realPath = realpath($pathToFile);
+
+    if (!$realPath) {
+        throw new Exception("Не могу найти файл {$pathToFile}");
+    }
+
+    $fileInfo = pathinfo($realPath);
+
+    if ($fileInfo['filename']) {
+        throw new Exception("Неизвестное имя файла");
+    }
+
+    $fileType = strtolower($fileInfo['extension']);
+    $rawData = file_get_contents($realPath);
+
+    if ($fileType === 'json') {
+        $parsedData = jsonParse($rawData);
+    } elseif ($fileType === 'yml' || $fileType === 'yaml') {
+        $parsedData = yamlParse($rawData);
+    } else {
+        throw new Exception("Udefined file format: {$fileType}\n");
+    }
+
+    return $parsedData;
+}
+
+
+/**
+ * Парсинг JSON
+ *
+ * @param string $json данные в JSON формате
+ *
+ * @return \stdClass
+ */
+function jsonParse(string $json): \stdClass
+{
+    $parsedData = json_decode($json);
+
+    if (json_last_error() === JSON_ERROR_NONE) {
+        return (object) $parsedData;
+    } else {
+        throw new Exception("JSON parse error: " . json_last_error_msg());
+    }
+}
+
+/**
+ * Парсинг YAML
+ *
+ * @param string $yaml данные в YAML формате
+ *
+ * @return \stdClass
+ */
+function yamlParse(string $yaml): \stdClass
+{
+    try {
+        return Yaml::parse($yaml, Yaml::PARSE_OBJECT_FOR_MAP);
+    } catch (ParseException $exception) {
+        die("Unable to parse the YAML string: {$exception->getMessage()}");
+    }
 }
