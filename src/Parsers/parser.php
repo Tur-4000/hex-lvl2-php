@@ -13,6 +13,7 @@
 
 namespace Differ\Differ\Parsers;
 
+use Exception;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 
@@ -51,7 +52,7 @@ function parseFile(string $pathToFile): \stdClass
 
     $fileInfo = pathinfo($realPath);
 
-    if ($fileInfo['filename']) {
+    if (empty($fileInfo['filename'])) {
         throw new Exception("Неизвестное имя файла");
     }
 
@@ -82,7 +83,7 @@ function jsonParse(string $json): \stdClass
     $parsedData = json_decode($json);
 
     if (json_last_error() === JSON_ERROR_NONE) {
-        return (object) $parsedData;
+        return $parsedData;
     } else {
         throw new Exception("JSON parse error: " . json_last_error_msg());
     }
