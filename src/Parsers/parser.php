@@ -1,11 +1,5 @@
 <?php
 
-<<<<<<< HEAD
-namespace Differ\Differ\Parsers;
-
-use function Differ\Differ\Parsers\parserFabric;
-use function Differ\Differ\Parsers\buildAst;
-=======
 /**
  * Парсер файлов json и yaml
  * php version 7.4
@@ -18,7 +12,6 @@ use function Differ\Differ\Parsers\buildAst;
  */
 
 namespace Differ\Differ\Parsers;
->>>>>>> 97b4acc1545e2e82ebae2097cbffc5f3a8859b25
 
 use function Differ\Differ\Parsers\parserFabric;
 use function Differ\Differ\Parsers\buildAst;
@@ -29,7 +22,7 @@ use function Differ\Differ\Parsers\buildAst;
  * @param string $pathToFile1 путь к первому сравниваемому файлу
  * @param string $pathToFile2 путь ко второму сравниваемому файлу
  *
- * @return \stdClass
+ * @return array
  */
 function parser(string $pathToFile1, string $pathToFile2)
 {
