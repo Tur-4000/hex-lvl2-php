@@ -62,7 +62,8 @@ function parseFile(string $pathToFile): \stdClass
     if ($fileType === 'json') {
         $parsedData = jsonParse($rawData);
     } elseif ($fileType === 'yml' || $fileType === 'yaml') {
-        $parsedData = yamlParse($rawData);
+        // $parsedData = yamlParse($rawData);
+        $parsedData = Yaml::parse($rawData, Yaml::PARSE_OBJECT_FOR_MAP);
     } else {
         throw new Exception("Udefined file format: {$fileType}\n");
     }
