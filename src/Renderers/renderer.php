@@ -1,49 +1,80 @@
 <?php
 
+/**
+ * Создание текстового представления сравнения файлов
+ * php version 7.4
+ *
+ * @category Library
+ * @package  Differ\Differ
+ * @author   Valeriy Turbanov <tur.4000@gmail.com>
+ * @license  https://github.com/Tur-4000/hex-lvl2-php/LICENSE MIT
+ * @link     https://github.com/Tur-4000/hex-lvl2-php
+ */
+
 namespace Differ\Differ\Renderer;
 
+use function Funct\false;
+use function Funct\true;
+use function Funct\null;
+
+/**
+ * Создание текстового представления сравнения файлов
+ *
+ * @param \stdClass $ast    промежуточное представление для вывода
+ * @param string    $format формат вывода
+ *
+ * @return string
+ */
 function render(array $ast, string $format = 'stylish'): string
 {
-    $result = '{' . PHP_EOL;
+    $res = '{' . PHP_EOL;
     foreach ($ast as $key => $value) {
         switch ($value['status']) {
             case 'unchanged':
-                $val = is_bool($value['value']) ? boolToString($value['value']) : $value['value'];
-                $result .= "    {$key}: {$val}" . PHP_EOL;
+                $res .= "    {$key}: " . valueToString($value['value']) . PHP_EOL;
                 break;
             case 'modified':
-                $valBefore = is_bool($value['valueBefore']) ?
-                    boolToString($value['valueBefore']) :
-                    $value['valueBefore'];
-                $valAfter = is_bool($value['valueAfter']) ?
-                    boolToString($value['valueAfter']) :
-                    $value['valueAfter'];
-                $result .= "  - {$key}: {$valBefore}" . PHP_EOL;
-                $result .= "  + {$key}: {$valAfter}" . PHP_EOL;
+                $res .= "  - {$key}: " . valueToString($value['valueBefore']) . PHP_EOL;
+                $res .= "  + {$key}: " . valueToString($value['valueAfter']) . PHP_EOL;
                 break;
             case 'added':
-                $val = is_bool($value['value']) ? boolToString($value['value']) : $value['value'];
-                $result .= "  + {$key}: {$val}" . PHP_EOL;
+                $res .= "  + {$key}: " . valueToString($value['value']) . PHP_EOL;
                 break;
             case 'deleted':
-                $val = is_bool($value['value']) ? boolToString($value['value']) : $value['value'];
-                $result .= "  - {$key}: {$val}" . PHP_EOL;
+                $res .= "  - {$key}: " . valueToString($value['value']) . PHP_EOL;
                 break;
         }
     }
 
-    $result .= '}';
+    $res .= '}';
 
-    return $result;
+    return $res;
 }
 
-function boolToString(bool $value): string
+/**
+ * Преобразование значения в строку
+ *
+ * @param mixed $value данные
+ *
+ * @return string
+ */
+function valueToString($value): string
 {
-    if ($value === true) {
+    if (true($value)) {
         return 'true';
     }
 
-    if ($value === false) {
+    if (false($value)) {
         return 'false';
     }
+
+    if (null($value)) {
+        return 'null';
+    }
+
+    if (is_array($value)) {
+        return '[' . implode(', ', $value) . ']';
+    }
+
+    return "{$value}";
 }
