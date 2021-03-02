@@ -32,8 +32,8 @@ class BuildAstTest extends TestCase
     public function testBuildAst()
     {
         // заглушка
-        $this->assertEquals(true, true);
-/*
+        // $this->assertEquals(true, true);
+
         $data01 = new \stdClass();
         $data01->host = 'hexlet.io';
         $data01->timeout = 50;
@@ -54,7 +54,7 @@ class BuildAstTest extends TestCase
         ];
 
         $this->assertEquals($expected01, buildAst($data01, $data02));
-
+/*
         $set01 = new \stdClass();
         $set01->key1 = 1;
 

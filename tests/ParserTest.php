@@ -35,7 +35,7 @@ class ParserTest extends TestCase
         $expected1->timeout = 50;
         $expected1->proxy = '123.234.53.22';
         $expected1->follow = false;
-        $ymlData1 = parseFile('./tests/fixtures/file01.yaml');
+        $ymlData1 = parseFile('./tests/fixtures/file01.YAML');
         $jsonData1 = parseFile('./tests/fixtures/file01.json');
         $this->assertEquals($expected1, $ymlData1);
         $this->assertEquals($expected1, $jsonData1);

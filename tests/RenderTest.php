@@ -36,33 +36,33 @@ class RenderTest extends TestCase
     public function testRender()
     {
         // заглушка
-        $this->assertEquals(true, true);
-        // $ast = [
-        //     'follow' => [
-        //         'status' => 'deleted',
-        //         'value' => false,
-        //     ],
-        //     'host' => [
-        //         'status' => 'unchanged',
-        //         'value' => 'hexlet.io',
-        //     ],
-        //     'proxy' => [
-        //         'status' => 'deleted',
-        //         'value' => '123.234.53.22',
-        //     ],
-        //     'timeout' => [
-        //         'status' => 'modified',
-        //         'valueBefore' => 50,
-        //         'valueAfter' => 20,
-        //     ],
-        //     'verbose' => [
-        //         'status' => 'added',
-        //         'value' => true,
-        //     ],
-        // ];
+        // $this->assertEquals(true, true);
+        $ast = [
+            'follow' => [
+                'status' => 'deleted',
+                'value' => false,
+            ],
+            'host' => [
+                'status' => 'unchanged',
+                'value' => 'hexlet.io',
+            ],
+            'proxy' => [
+                'status' => 'deleted',
+                'value' => '123.234.53.22',
+            ],
+            'timeout' => [
+                'status' => 'modified',
+                'valueBefore' => 50,
+                'valueAfter' => 20,
+            ],
+            'verbose' => [
+                'status' => 'added',
+                'value' => true,
+            ],
+        ];
 
-        // $plainExpected = file_get_contents('./tests/fixtures/plainExpected.txt');
+        $plainExpected = file_get_contents('./tests/fixtures/plainExpected.txt');
 
-        // $this->assertEquals($plainExpected, render($ast));
+        $this->assertEquals($plainExpected, render($ast));
     }
 }
