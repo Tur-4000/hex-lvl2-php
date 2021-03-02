@@ -44,25 +44,13 @@ function parser(string $pathToFile1, string $pathToFile2)
  */
 function parseFile(string $pathToFile): \stdClass
 {
-    $realPath = realpath($pathToFile);
+    $rawData = getRawContent($pathToFile);
 
-    if (!$realPath) {
-        throw new Exception("Can't find the file {$pathToFile}");
-    }
-
-    $fileInfo = pathinfo($realPath);
-
-    if (empty($fileInfo['filename'])) {
-        throw new Exception("Unknown file name");
-    }
-
-    $fileType = strtolower($fileInfo['extension']);
-    $rawData = file_get_contents($realPath);
+    $fileType = strtolower(pathinfo($pathToFile, PATHINFO_EXTENSION));
 
     if ($fileType === 'json') {
         $parsedData = jsonParse($rawData);
     } elseif ($fileType === 'yml' || $fileType === 'yaml') {
-        // $parsedData = yamlParse($rawData);
         $parsedData = Yaml::parse($rawData, Yaml::PARSE_OBJECT_FOR_MAP);
     } else {
         throw new Exception("Invalid file type: {$fileType}\n");
@@ -71,6 +59,20 @@ function parseFile(string $pathToFile): \stdClass
     return $parsedData;
 }
 
+function getRawContent(string $pathToFile): string
+{
+    $realPath = realpath($pathToFile);
+
+    if (!$realPath) {
+        throw new Exception("Can't find the file {$pathToFile}");
+    }
+
+    if (empty(pathinfo($realPath, PATHINFO_FILENAME))) {
+        throw new Exception("Unknown file name");
+    }
+
+    return file_get_contents($realPath);
+}
 
 /**
  * Парсинг JSON
@@ -87,21 +89,5 @@ function jsonParse(string $json): \stdClass
         return $parsedData;
     } else {
         throw new Exception("JSON parse error: " . json_last_error_msg());
-    }
-}
-
-/**
- * Парсинг YAML
- *
- * @param string $yaml данные в YAML формате
- *
- * @return \stdClass
- */
-function yamlParse(string $yaml): \stdClass
-{
-    try {
-        return Yaml::parse($yaml, Yaml::PARSE_OBJECT_FOR_MAP);
-    } catch (ParseException $exception) {
-        die("Unable to parse the YAML string: {$exception->getMessage()}");
     }
 }
