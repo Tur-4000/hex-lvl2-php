@@ -47,13 +47,13 @@ function parseFile(string $pathToFile): \stdClass
     $realPath = realpath($pathToFile);
 
     if (!$realPath) {
-        throw new Exception("Не могу найти файл {$pathToFile}");
+        throw new Exception("Can't find the file {$pathToFile}");
     }
 
     $fileInfo = pathinfo($realPath);
 
     if (empty($fileInfo['filename'])) {
-        throw new Exception("Неизвестное имя файла");
+        throw new Exception("Unknown file name");
     }
 
     $fileType = strtolower($fileInfo['extension']);
@@ -65,7 +65,7 @@ function parseFile(string $pathToFile): \stdClass
         // $parsedData = yamlParse($rawData);
         $parsedData = Yaml::parse($rawData, Yaml::PARSE_OBJECT_FOR_MAP);
     } else {
-        throw new Exception("Udefined file format: {$fileType}\n");
+        throw new Exception("Invalid file type: {$fileType}\n");
     }
 
     return $parsedData;
