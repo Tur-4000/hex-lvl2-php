@@ -74,9 +74,9 @@ class ParserTest extends TestCase
         $data = parseFile('./tests/fixtures/bad.json');
     }
 
-    // public function testYamlError()
-    // {
-    //     $this->expectException(Symfony\Component\Yaml\Exception\ParseException::class);
-    //     $data = parseFile('./tests/fixtures/bad.yml');
-    // }
+    public function testYamlError()
+    {
+        $this->expectException(\Symfony\Component\Yaml\Exception\ParseException::class);
+        $data = parseFile('./tests/fixtures/bad.yml');
+    }
 }
