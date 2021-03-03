@@ -20,23 +20,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use function Differ\Differ\Parsers\buildAst;
 
 /**
- * Парсинг файлов для сравнения и создание промежуточного представления
- *
- * @param string $pathToFile1 путь к первому сравниваемому файлу
- * @param string $pathToFile2 путь ко второму сравниваемому файлу
- *
- * @return array
- */
-function parser(string $pathToFile1, string $pathToFile2)
-{
-    $data1 = parseFile($pathToFile1);
-    $data2 = parseFile($pathToFile2);
-
-    return buildAst($data1, $data2);
-}
-
-/**
- * Фабрика парсинга файлов yml и json
+ * Парсинг файлов YAML и JSON
  *
  * @param string $pathToFile имя файла (полное или относительное)
  *
@@ -59,6 +43,13 @@ function parseFile(string $pathToFile): \stdClass
     return $parsedData;
 }
 
+/**
+ * Получение содержимого файла
+ *
+ * @param string $pathToFile путь к файлу
+ *
+ * @return string
+ */
 function getRawContent(string $pathToFile): string
 {
     $realPath = realpath($pathToFile);
@@ -75,7 +66,7 @@ function getRawContent(string $pathToFile): string
 }
 
 /**
- * Парсинг JSON
+ * Обёртка над json_decode для отлова ошибок парсинга
  *
  * @param string $json данные в JSON формате
  *

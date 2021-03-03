@@ -13,7 +13,11 @@
 
 namespace Differ\Differ\GenDiff;
 
-use function Differ\Differ\Parsers\parser;
+use Exception;
+use Symfony\Component\Yaml\Exception\ParseException;
+
+use function Differ\Differ\Parsers\parseFile;
+use function Differ\Differ\Parsers\buildAst;
 use function Differ\Differ\Renderer\render;
 
 const VERSION = "0.0.0";
@@ -29,9 +33,18 @@ const VERSION = "0.0.0";
  */
 function genDiff(string $file1, string $file2, string $format = 'stylish'): string
 {
-    $ast = parser($file1, $file2);
+    try {
+        $data1 = parseFile($file1);
+        $data2 = parseFile($file2);
+    } catch (ParseException $e) {
+        return $e->getMessage();
+    } catch (Exception $e) {
+        return $e->getMessage();
+    }
 
-    $diff = render($ast, $format);
+    $diffAst = buildAst($data1, $data2);
+
+    $diff = render($diffAst, $format);
 
     return $diff;
 }

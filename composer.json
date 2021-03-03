@@ -20,6 +20,7 @@
       ]
     },
     "require": {
+        "php": ">=7.3.0",
         "docopt/docopt": "^1.0",
         "funct/funct": "^1.5",
         "symfony/yaml": "^5.2"

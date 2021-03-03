@@ -2,8 +2,6 @@
 
 <?php
 
-use Symfony\Component\Yaml\Exception\ParseException;
-
 use const Differ\Differ\GenDiff\VERSION;
 
 use function Differ\Differ\GenDiff\genDiff;
@@ -37,12 +35,6 @@ $firstFile = $params->args['FIRST_FILE'];
 $secondFile = $params->args['SECOND_FILE'];
 $format = $params->args['--format'];
 
-try {
-    $diff = genDiff($firstFile, $secondFile, $format);
-    echo $diff;
-    echo PHP_EOL;
-} catch(ParseException $e) {
-    echo $e->getMessage();
-} catch(Exception $e) {
-    echo $e->getMessage();
-}
+$diff = genDiff($firstFile, $secondFile, $format);
+echo $diff;
+echo PHP_EOL;
