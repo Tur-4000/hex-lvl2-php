@@ -16,6 +16,9 @@ namespace Differ\Differ\Tests;
 use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\Renderer\render;
+use function Differ\Differ\Renderer\genRender;
+use function Differ\Differ\Parsers\parseFile;
+use function Differ\Differ\Parsers\genAst;
 
 /**
  * Класс тестирования рендера
@@ -64,5 +67,17 @@ class RenderTest extends TestCase
         $plainExpected = file_get_contents('./tests/fixtures/plainExpected.txt');
 
         $this->assertEquals($plainExpected, render($ast));
+    }
+
+    public function testGenRender()
+    {
+        $data1 = parseFile('./tests/fixtures/file03.json');
+        $data2 = parseFile('./tests/fixtures/file04.json');
+        $ast = genAst($data1, $data2);
+        var_dump($ast);
+        $actual1 = genRender($ast);
+        $expected1 = file_get_contents('./tests/fixtures/expected2.txt');
+
+        $this->assertEquals($expected1, $actual1);
     }
 }

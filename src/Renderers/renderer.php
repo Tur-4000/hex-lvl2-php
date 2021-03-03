@@ -51,6 +51,35 @@ function render(array $ast, string $format = 'stylish'): string
     return $res;
 }
 
+function genRender(array $ast, string $format = 'stylish'): string
+{
+    $res = '{' . PHP_EOL;
+    foreach ($ast as $key => $value) {
+        switch ($value['type']) {
+            case 'unchanged':
+                $res .= "    {$key}: " . valueToString($value['value']) . PHP_EOL;
+                break;
+            case 'modified':
+                $res .= "  - {$key}: " . valueToString($value['old']) . PHP_EOL;
+                $res .= "  + {$key}: " . valueToString($value['new']) . PHP_EOL;
+                break;
+            case 'added':
+                $res .= "  + {$key}: " . valueToString($value['value']) . PHP_EOL;
+                break;
+            case 'deleted':
+                $res .= "  - {$key}: " . valueToString($value['value']) . PHP_EOL;
+                break;
+            case 'nested':
+                $nest = $value['children'];
+                $res .= genRender($nest, $format);
+        }
+    }
+
+    $res .= '}';
+
+    return $res;
+}
+
 /**
  * Преобразование значения в строку
  *
