@@ -82,38 +82,25 @@ function buildAst(\stdClass $data1, \stdClass $data2)
 
 function genAst(\stdClass $data1, \stdClass $data2)
 {
-    $mergedData = mergeObjects($data1, $data2);
-    $ast = new \stdClass();
-
-    foreach ($mergedData as $key => $value) {
-        if (!property_exists($data1, $key)) {
-            $ast->$key = [
-                'type' => 'value',
-                'state' => 'added',
-                'value' => $value
+    $keys = uniqKeys($data1, $data2);
+    $ast = [];
+    foreach ($keys as $key) {
+        if (!property_exists($data2, $key)) {
+            $ast[$key] = ['type' => 'deleted', 'value' => $data1->$key];
+        } elseif (!property_exists($data1, $key)) {
+            $ast[$key] = ['type' => 'added', 'value' => $data2->$key];
+        } elseif (is_object($data1->$key) && is_object($data2->$key)) {
+            $ast[$key] = [
+                'type' => 'nested',
+                'children' => genAst($data1->$key, $data2->$key),
             ];
-        } elseif (!property_exists($data2, $key)) {
-            $ast->$key = [
-                'type' => 'value',
-                'state' => 'deleted',
-                'value' => $value
-            ];
-        } elseif ($value === $data1->$key) {
-            $ast->$key = [
-                'type' => 'value',
-                'state' => 'unchanged',
-                'value' => $value
-            ];
-        } elseif ($value != $data1->$key) {
-            $ast->$key = [
-                'type' => 'value',
-                'state' => 'modified',
-                'valueBefore' => $data1->$key,
-                'valueAfter' => $value,
-            ];
+        } elseif ($data1->$key === $data2->$key) {
+            $ast[$key] = ['type' => 'unchanged', 'value' => $data1->$key];
+        } elseif ($data1->$key !== $data2->$key) {
+            $ast[$key] = ['type' => 'modified', 'old' => $data1->$key, 'new' => $data2->$key];
         }
     }
-    // var_dump($ast);
+
     return $ast;
 }
 
@@ -135,4 +122,14 @@ function mergeObjects(\stdClass $data1, \stdClass $data2): \stdClass
     }
 
     return $merged;
+}
+
+function uniqKeys(\stdClass $data1, \stdClass $data2): array
+{
+    $merged = array_merge((array) $data1, (array) $data2);
+
+    $keys = array_keys($merged);
+    sort($keys);
+
+    return $keys;
 }

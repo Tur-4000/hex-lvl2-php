@@ -90,73 +90,63 @@ class BuildAstTest extends TestCase
      *
      * @return void
      */
-    // public function testGenAst()
-    // {
-    //     $this->assertEquals((new \stdClass()), genAst(new \stdClass(), new \stdClass()));
+    public function testGenAst()
+    {
+        $this->assertEquals([], genAst(new \stdClass(), new \stdClass()));
 
-    //     $expected1 = new \stdClass();
-    //     $expected1->verbose = ['type' => 'value', 'state' => 'added', 'value' => true,];
-    //     $expected1->follow = ['type' => 'value', 'state' => 'deleted', 'value' => false,];
-    //     $expected1->host = ['type' => 'value', 'state' => 'unchanged', 'value' => 'hexlet.io',];
-    //     $expected1->proxy = ['type' => 'value', 'state' => 'deleted', 'value' => '123.234.53.22',];
-    //     $expected1->timeout = [
-    //         'type' => 'value',
-    //         'state' => 'modified',
-    //         'valueBefore' => 50,
-    //         'valueAfter' => 20
-    //     ];
+        $expected1 = [
+            'verbose' => ['type' => 'added', 'value' => true,],
+            'follow' => ['type' => 'deleted', 'value' => false,],
+            'host' => ['type' => 'unchanged', 'value' => 'hexlet.io',],
+            'proxy' => ['type' => 'deleted', 'value' => '123.234.53.22',],
+            'timeout' => ['type' => 'modified', 'old' => 50, 'new' => 20],
+        ];
 
-    //     $data1 = new \stdClass();
-    //     $data1->host = 'hexlet.io';
-    //     $data1->timeout = 50;
-    //     $data1->proxy = '123.234.53.22';
-    //     $data1->follow = false;
+        $data1 = new \stdClass();
+        $data1->host = 'hexlet.io';
+        $data1->timeout = 50;
+        $data1->proxy = '123.234.53.22';
+        $data1->follow = false;
 
-    //     $data2 = new \stdClass();
-    //     $data2->timeout = 20;
-    //     $data2->verbose = true;
-    //     $data2->host = 'hexlet.io';
+        $data2 = new \stdClass();
+        $data2->timeout = 20;
+        $data2->verbose = true;
+        $data2->host = 'hexlet.io';
 
-    //     $this->assertEquals($expected1, genAst($data1, $data2));
+        $this->assertEquals($expected1, genAst($data1, $data2));
 
+        $val1 = new \stdClass();
+        $val1->set1 = 1;
+        $val1->set2 = 2;
+        $val1->set4 = 5;
+        $data3 = new \stdClass();
+        $data3->key1 = 'val1';
+        $data3->key2 = 'val2';
+        $data3->key3 = $val1;
 
-    //     $val1 = new \stdClass();
-    //     $val1->set1 = 1;
-    //     $val1->set2 = 2;
-    //     $val1->set4 = 5;
-    //     $data3 = new \stdClass();
-    //     $data3->key1 = 'val1';
-    //     $data3->key2 = 'val2';
-    //     $data3->key3 = $val1;
+        $val2 = new \stdClass();
+        $val2->set1 = 1;
+        $val2->set2 = 3;
+        $val2->set3 = 4;
+        $data4 = new \stdClass();
+        $data4->key1 = 'val1';
+        $data4->key2 = 'val3';
+        $data4->key3 = $val2;
 
-    //     $val2 = new \stdClass();
-    //     $val2->set1 = 1;
-    //     $val2->set2 = 3;
-    //     $val2->set3 = 4;
-    //     $data4 = new \stdClass();
-    //     $data4->key1 = 'val1';
-    //     $data4->key2 = 'val3';
-    //     $data4->key3 = $val2;
+        $expected2 = [
+            'key1' => ['type' => 'unchanged', 'value' => 'val1',],
+            'key2' => ['type' => 'modified', 'old' => 'val2', 'new' => 'val3'],
+            'key3' => [
+                'type' => 'nested',
+                'children' => [
+                    'set1' => ['type' => 'unchanged', 'value' => 1,],
+                    'set2' => ['type' => 'modified', 'old' => 2, 'new' => 3,],
+                    'set3' => ['type' => 'added', 'value' => 4,],
+                    'set4' => ['type' => 'deleted', 'value' => 5,],
+                ],
+            ]
+        ];
 
-    //     $expected2 = new \stdClass();
-    //     $expected2->key1 = ['type' => 'value', 'state' => 'unchanged', 'value' => 'val1',];
-    //     $expected2->key2 = [
-    //         'type' => 'value',
-    //         'state' => 'modified',
-    //         'valueBefore' => 'val2',
-    //         'valueAfter' => 'val3',
-    //     ];
-    //     $expected2->key3 = [
-    //         'type' => 'node',
-    //         'state' => 'modified',
-    //         'value' => [
-    //             'set1' => ['type' => 'value', 'state' => 'unchanged', 'value' => 1,],
-    //             'set2' => ['type' => 'value', 'state' => 'modified', 'valueBefore' => 2, 'valueAfter' => 3,],
-    //             'set3' => ['type' => 'value', 'state' => 'unchanged', 'value' => 4,],
-    //             'set4' => ['type' => 'value', 'state' => 'unchanged', 'value' => 5,],
-    //         ],
-    //     ];
-
-    //     $this->assertEquals($expected2, genAst($data3, $data4));
-    // }
+        $this->assertEquals($expected2, genAst($data3, $data4));
+    }
 }
